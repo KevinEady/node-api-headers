@@ -145,7 +145,6 @@ const v3 = {
 const v4 = {
     js_native_api_symbols: [
         ...v3.js_native_api_symbols
-
     ],
     node_api_symbols: [
         ...v3.node_api_symbols,
@@ -213,17 +212,30 @@ const v8 = {
         ...v7.node_api_symbols,
         'napi_add_async_cleanup_hook',
         'napi_remove_async_cleanup_hook'
+    ]
+}
 
+const experimental = {
+    js_native_api_symbols: [
+        ...v8.js_native_api_symbols,
+        'node_api_create_syntax_error',
+        'node_api_symbol_for',
+        'node_api_throw_syntax_error'
+    ],
+    node_api_symbols: [
+        ...v8.node_api_symbols,
+        'node_api_get_module_file_name'
     ]
 }
 
 module.exports = {
-     v1,
-     v2,
-     v3,
-     v4,
-     v5,
-     v6,
-     v7,
-     v8
+    v1,
+    v2,
+    v3,
+    v4,
+    v5,
+    v6,
+    v7,
+    v8,
+    experimental
 }
