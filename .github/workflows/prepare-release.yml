@@ -1,0 +1,39 @@
+name: Header Sync
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+    paths: ['include/**', 'def/**']
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Update headers from nodejs/node
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - shell: bash
+        id: check-changes
+        name: Update package version
+        run: npm version --no-git-tag-version minor
+      - name: Set up ghauth config (Ubuntu)
+        run: |
+          mkdir -p ~/.config/changelog-maker/
+          echo '{"user": "github-actions[bot]", "token": "'${{ secrets.GITHUB_TOKEN }}'"}' > ~/.config/changelog-maker/config.json
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        if: ${{ steps.check-changes.outputs.BRANCH_NAME }}
+        with:
+          branch: ${{ steps.check-changes.outputs.BRANCH_NAME }}
+          commit-message: ${{ steps.check-changes.outputs.COMMIT_MESSAGE }}
+          title: ${{ steps.check-changes.outputs.COMMIT_MESSAGE }}
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          body: null
+          delete-branch: true
