@@ -37,11 +37,17 @@ jobs:
           COMMIT_MESSAGE="release: v$VERSION"
           BRANCH_NAME="release/v$VERSION"
           echo $COMMIT_MESSAGE
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+          if git ls-remote --exit-code --heads $GITHUB_SERVER_URL/$GITHUB_REPOSITORY $BRANCH_NAME >/dev/null; then
+              echo "Branch exists. Nothing to do."
+          else
+            echo "Branch does not exists."
+            echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
+            echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+          fi
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@6d6857d36972b65feb161a90e484f2984215f83e # v6.0.5
+        if: ${{ steps.pr-vars.outputs.BRANCH_NAME }}
         with:
           branch: ${{ steps.pr-vars.outputs.BRANCH_NAME }}
           commit-message: ${{ steps.pr-vars.outputs.COMMIT_MESSAGE }}
@@ -50,13 +56,3 @@ jobs:
           body: null
           labels: release
           delete-branch: true
-      - name: Close existing PRs
-        if: ${{ steps.cpr.outputs.pull-request-number }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr list --json number,author,title,labels  --jq '[ .[] | select(.author.login == "app/github-actions" and .number != ${{ steps.cpr.outputs.pull-request-number }} and (.labels[]| select(.name =="release" )))]' | jq -c '.[]' |
-          while IFS=$"\n" read -r c; do
-              pr_number=$(echo "$c" | jq -r '.number')
-              gh pr close $pr_number --delete-branch --comment "Closing in favor of [#${{ steps.cpr.outputs.pull-request-number }}](${{ steps.cpr.outputs.pull-request-url }})."
-          done
