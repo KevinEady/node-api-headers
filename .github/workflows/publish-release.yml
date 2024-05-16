@@ -25,7 +25,8 @@ jobs:
         run: |
           VERSION=$(jq -r ".version" package.json)
           PACKAGE_NAME=$(jq -r ".name" package.json)
-          VERSION_ALREADY_PUBLISHED=$(npm show $PACKAGE_NAME@$VERSION 1>&/dev/null 2>&/dev/null && echo 1)
+          npm show $PACKAGE_NAME@$VERSION 1>&/dev/null 2>&/dev/null && true
+          VERSION_ALREADY_PUBLISHED="$?"
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "VERSION_ALREADY_PUBLISHED=$VERSION_ALREADY_PUBLISHED" >> $GITHUB_OUTPUT
       - name: Publish to npm
@@ -33,6 +34,7 @@ jobs:
         run:
           echo npm publish
       - name: Create GitHub Release
+        if: ${{ steps.release-vars.outputs.VERSION_ALREADY_PUBLISHED != '1' }}
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.release-vars.outputs.VERSION }}
