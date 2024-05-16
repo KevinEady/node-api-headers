@@ -1,5 +1,15 @@
 # node-api-headers Changelog
 
+## 2024-05-16 Version 1.2.0, github-actions\[bot]
+
+### Notable changes
+
+- Squashed commit of the following:
+
+### Commits
+
+* \[[`2c380756a8`](https://github.com/nodejs/node-api-headers/commit/2c380756a8)] - Squashed commit of the following: (Kevin Eady)
+
 ## 2023-08-05 Version 1.1.0, @NickNaso
 
 ### Notable changes
