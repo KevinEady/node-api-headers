@@ -1,5 +1,35 @@
 # node-api-headers Changelog
 
+## 2024-05-16 Version 1.2.0, github-actions\[bot]
+
+### Notable changes
+
+- Automated release wip 2
+- Merge pull request #40 from nodejs/update-headers/v22.1.0
+- Update headers from nodejs/node tag v22.1.0
+- Merge pull request #38 from nodejs/update-headers/v21.7.0
+- Update headers from nodejs/node tag v21.7.0
+- Update headers from nodejs/node tag v21.6.1
+- Update headers from nodejs/node tag v21.6.0
+- Update headers from nodejs/node tag v21.0.0
+- Update headers from nodejs/node tag v20.8.0
+- Update headers from nodejs/node tag v20.7.0
+- **release**: v1.1.0.
+
+### Commits
+
+* \[[`bca4d30f4b`](https://github.com/nodejs/node-api-headers/commit/bca4d30f4b)] - Automated release wip 2 (Kevin Eady) [#53](https://github.com/nodejs/node-api-headers/pull/53)
+* \[[`d5cfe19da8`](https://github.com/nodejs/node-api-headers/commit/d5cfe19da8)] - Merge pull request #40 from nodejs/update-headers/v22.1.0 (Michael Dawson)
+* \[[`aa571490c9`](https://github.com/nodejs/node-api-headers/commit/aa571490c9)] - Update headers from nodejs/node tag v22.1.0 (github-actions\[bot])
+* \[[`5897615622`](https://github.com/nodejs/node-api-headers/commit/5897615622)] - Merge pull request #38 from nodejs/update-headers/v21.7.0 (Michael Dawson)
+* \[[`b94726ba9e`](https://github.com/nodejs/node-api-headers/commit/b94726ba9e)] - Update headers from nodejs/node tag v21.7.0 (github-actions\[bot])
+* \[[`0f8588b576`](https://github.com/nodejs/node-api-headers/commit/0f8588b576)] - Update headers from nodejs/node tag v21.6.1 (github-actions\[bot]) [#37](https://github.com/nodejs/node-api-headers/pull/37)
+* \[[`747b7b12c3`](https://github.com/nodejs/node-api-headers/commit/747b7b12c3)] - Update headers from nodejs/node tag v21.6.0 (github-actions\[bot]) [#36](https://github.com/nodejs/node-api-headers/pull/36)
+* \[[`f62bc5ce4e`](https://github.com/nodejs/node-api-headers/commit/f62bc5ce4e)] - Update headers from nodejs/node tag v21.0.0 (github-actions\[bot]) [#34](https://github.com/nodejs/node-api-headers/pull/34)
+* \[[`1bf4bededc`](https://github.com/nodejs/node-api-headers/commit/1bf4bededc)] - Update headers from nodejs/node tag v20.8.0 (github-actions\[bot]) [#33](https://github.com/nodejs/node-api-headers/pull/33)
+* \[[`577d2b72cf`](https://github.com/nodejs/node-api-headers/commit/577d2b72cf)] - Update headers from nodejs/node tag v20.7.0 (github-actions\[bot]) [#32](https://github.com/nodejs/node-api-headers/pull/32)
+* \[[`186e04b5e4`](https://github.com/nodejs/node-api-headers/commit/186e04b5e4)] - **release**: v1.1.0. (Nicola Del Gobbo)
+
 ## 2023-08-05 Version 1.1.0, @NickNaso
 
 ### Notable changes
