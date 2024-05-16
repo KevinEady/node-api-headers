@@ -1,5 +1,15 @@
 # node-api-headers Changelog
 
+## 2024-05-16 Version 1.2.0, github-actions\[bot]
+
+### Notable changes
+
+- do not fast-fail on stderr in changelog-maker
+
+### Commits
+
+* \[[`fce67b9fb8`](https://github.com/nodejs/node-api-headers/commit/fce67b9fb8)] - do not fast-fail on stderr in changelog-maker (Kevin Eady)
+
 ## 2023-08-05 Version 1.1.0, @NickNaso
 
 ### Notable changes
