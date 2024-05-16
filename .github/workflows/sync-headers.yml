@@ -54,6 +54,8 @@ jobs:
           labels: headers
           delete-branch: true
       - name: Close existing PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
           gh pr list --json number,author,title,labels  --jq '[ .[] | select(.author.login == "app/github-actions" and .number != ${{ steps.cpr.outputs.pull-request-number }} and (.labels[]| select(.name =="headers" )))]' | jq -c '.[]' |

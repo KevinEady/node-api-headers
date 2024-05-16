@@ -50,6 +50,8 @@ jobs:
           delete-branch: true
       - name: Close existing PRs
         if: ${{ steps.cpr.outputs.pull-request-number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr list --json number,author,title,labels  --jq '[ .[] | select(.author.login == "app/github-actions" and .number != ${{ steps.cpr.outputs.pull-request-number }} and (.labels[]| select(.name =="release" )))]' | jq -c '.[]' |
           while IFS=$"\n" read -r c; do
