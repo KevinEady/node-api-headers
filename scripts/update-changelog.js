@@ -11,23 +11,21 @@ const { writeFile } = require("node:fs/promises");
  * @returns {Promise<string>}
  */
 async function getNewChangelogEntries() {
-    const stdout = await new Promise((resolve, reject) => {
+    const { stdout, stderr } = await new Promise((resolve, reject) => {
         // Echo an empty string to pass as the GitHub Personal Access Token
         // (PAT). This causes the process to error if no PAT is found in the
         // changelog-maker configuration file.
         exec("echo '' | npx changelog-maker --format=markdown", (err, stdout, stderr) => {
             if (err) {
                 reject(err);
-            } else if (stderr) {
-                reject(new Error(`stderr: ${stderr}`));
             } else {
-                resolve(stdout);
+                resolve({ stdout, stderr });
             }
         });
 
     });
 
-    return stdout;
+    return { stdout, stderr };
 }
 
 /**
@@ -127,10 +125,13 @@ function assertCleanChangelog(changelogPath) {
 async function main() {
     const changelogPath = resolvePath(__dirname, "..", "CHANGELOG.md");
     await assertCleanChangelog(changelogPath);
-    const [newEntires, existingText] = await Promise.all([getNewChangelogEntries(), getExistingChangelogText(changelogPath)]);
+    const [{ stdout: newEntires, stderr }, existingText] = await Promise.all([getNewChangelogEntries(), getExistingChangelogText(changelogPath)]);
     const changelogText = generateChangelogText(newEntires, existingText);
 
     await writeFile(changelogPath, changelogText);
+    if (stderr) {
+        console.error("stderr from changelog-maker:\n", stderr)
+    }
     console.log(`Changelog written to ${changelogPath}`);
 }
 
