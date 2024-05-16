@@ -42,7 +42,8 @@ jobs:
               fi
           fi
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
+        id: cpr
+        uses: peter-evans/create-pull-request@6d6857d36972b65feb161a90e484f2984215f83e # v6.0.5
         if: ${{ steps.check-changes.outputs.BRANCH_NAME }}
         with:
           branch: ${{ steps.check-changes.outputs.BRANCH_NAME }}
@@ -50,4 +51,15 @@ jobs:
           title: ${{ steps.check-changes.outputs.COMMIT_MESSAGE }}
           author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           body: null
+          labels: headers
           delete-branch: true
+      - name: Close existing PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          gh pr list --json number,author,title,labels  --jq '[ .[] | select(.author.login == "app/github-actions" and .number != ${{ steps.cpr.outputs.pull-request-number }} and (.labels[]| select(.name =="headers" )))]' | jq -c '.[]' |
+          while IFS=$"\n" read -r c; do
+              pr_number=$(echo "$c" | jq -r '.number')
+              gh pr close $pr_number --delete-branch --comment "Closing in favor of [#${{ steps.cpr.outputs.pull-request-number }}](${{ steps.cpr.outputs.pull-request-url }})."
+          done

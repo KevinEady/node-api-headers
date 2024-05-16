@@ -1,0 +1,44 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+    paths: ['package.json']
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Publish Release
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - shell: bash
+        id: release-vars
+        name: Compute Release Variables
+        run: |
+          VERSION=$(jq -r ".version" package.json)
+          PACKAGE_NAME=$(jq -r ".name" package.json)
+          npm show $PACKAGE_NAME@$VERSION 1>&/dev/null 2>&/dev/null && true
+          VERSION_ALREADY_PUBLISHED="$?"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION_ALREADY_PUBLISHED=$VERSION_ALREADY_PUBLISHED" >> $GITHUB_OUTPUT
+      - name: Publish to npm
+        if: ${{ steps.release-vars.outputs.VERSION_ALREADY_PUBLISHED != '1' }}
+        run:
+          echo npm publish
+      - name: Create GitHub Release
+        if: ${{ steps.release-vars.outputs.VERSION_ALREADY_PUBLISHED != '1' }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.release-vars.outputs.VERSION }}
+          commit: ${{ steps.release-vars.outputs.VERSION }}
+          name: Release ${{ steps.release-vars.outputs.VERSION }}
+          generateReleaseNotes: true
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,60 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+    paths: ['include/**', 'def/**']
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Prepare Release
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Set up ghauth config (Ubuntu)
+        run: |
+          mkdir -p ~/.config/changelog-maker/
+          echo '{"user": "github-actions[bot]", "token": "'${{ secrets.GITHUB_TOKEN }}'"}' > ~/.config/changelog-maker/config.json
+      - name: Update package version
+        run: npm version --no-git-tag-version minor
+      - name: Update changelog
+        run: npm run --silent update-changelog
+      - shell: bash
+        id: pr-vars
+        name: Compute Pull Request Variables
+        run: |
+          VERSION=$(jq -r ".version" package.json)
+          COMMIT_MESSAGE="release: v$VERSION"
+          BRANCH_NAME="release/v$VERSION"
+          echo $COMMIT_MESSAGE
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@6d6857d36972b65feb161a90e484f2984215f83e # v6.0.5
+        with:
+          branch: ${{ steps.pr-vars.outputs.BRANCH_NAME }}
+          commit-message: ${{ steps.pr-vars.outputs.COMMIT_MESSAGE }}
+          title: ${{ steps.pr-vars.outputs.COMMIT_MESSAGE }}
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          body: null
+          labels: release
+          delete-branch: true
+      - name: Close existing PRs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr list --json number,author,title,labels  --jq '[ .[] | select(.author.login == "app/github-actions" and .number != ${{ steps.cpr.outputs.pull-request-number }} and (.labels[]| select(.name =="release" )))]' | jq -c '.[]' |
+          while IFS=$"\n" read -r c; do
+              pr_number=$(echo "$c" | jq -r '.number')
+              gh pr close $pr_number --delete-branch --comment "Closing in favor of [#${{ steps.cpr.outputs.pull-request-number }}](${{ steps.cpr.outputs.pull-request-url }})."
+          done
