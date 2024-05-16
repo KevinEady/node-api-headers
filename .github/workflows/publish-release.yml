@@ -37,8 +37,9 @@ jobs:
         if: ${{ steps.release-vars.outputs.VERSION_ALREADY_PUBLISHED != '1' }}
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.release-vars.outputs.VERSION }}
-          commit: ${{ steps.release-vars.outputs.VERSION }}
+          tag: v${{ steps.release-vars.outputs.VERSION }}
+          commit: main
           name: Release ${{ steps.release-vars.outputs.VERSION }}
           generateReleaseNotes: true
           token: ${{ secrets.GITHUB_TOKEN }}
+          skipIfReleaseExists: true
