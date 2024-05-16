@@ -39,3 +39,4 @@ jobs:
           commit: ${{ steps.release-vars.outputs.VERSION }}
           name: Release ${{ steps.release-vars.outputs.VERSION }}
           generateReleaseNotes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
