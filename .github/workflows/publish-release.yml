@@ -38,7 +38,7 @@ jobs:
       - name: Publish to npm
         if: ${{ steps.release-vars.outputs.SHOULD_PUBLISH_VERSION != '0' }}
         run: |
-          npm publish --provenance --access public
+          echo npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Create GitHub Release
