@@ -1,5 +1,12 @@
 # node-api-headers Changelog
 
+## [1.4.0](https://github.com/KevinEady/node-api-headers/compare/v1.3.0...v1.4.0) (2024-10-13)
+
+
+### Features
+
+* update headers from nodejs/node tag v22.7.0 ([#48](https://github.com/KevinEady/node-api-headers/issues/48)) ([6c73c34](https://github.com/KevinEady/node-api-headers/commit/6c73c34b72e836531530f863eac315bd42e4569e))
+
 ## [1.3.0](https://github.com/nodejs/node-api-headers/compare/v1.2.0...v1.3.0) (2024-09-04)
 
 
