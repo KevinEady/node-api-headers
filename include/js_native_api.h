@@ -88,7 +88,31 @@ NAPI_EXTERN napi_status NAPI_CDECL napi_create_string_utf16(napi_env env,
                                                             const char16_t* str,
                                                             size_t length,
                                                             napi_value* result);
+#if NAPI_VERSION >= 10
+NAPI_EXTERN napi_status NAPI_CDECL node_api_create_external_string_latin1(
+    napi_env env,
+    char* str,
+    size_t length,
+    node_api_basic_finalize finalize_callback,
+    void* finalize_hint,
+    napi_value* result,
+    bool* copied);
+NAPI_EXTERN napi_status NAPI_CDECL
+node_api_create_external_string_utf16(napi_env env,
+                                      char16_t* str,
+                                      size_t length,
+                                      node_api_basic_finalize finalize_callback,
+                                      void* finalize_hint,
+                                      napi_value* result,
+                                      bool* copied);
 
+NAPI_EXTERN napi_status NAPI_CDECL node_api_create_property_key_latin1(
+    napi_env env, const char* str, size_t length, napi_value* result);
+NAPI_EXTERN napi_status NAPI_CDECL node_api_create_property_key_utf8(
+    napi_env env, const char* str, size_t length, napi_value* result);
+NAPI_EXTERN napi_status NAPI_CDECL node_api_create_property_key_utf16(
+    napi_env env, const char16_t* str, size_t length, napi_value* result);
+#endif  // NAPI_VERSION >= 10
 
 NAPI_EXTERN napi_status NAPI_CDECL napi_create_symbol(napi_env env,
                                                       napi_value description,
@@ -324,7 +348,7 @@ napi_create_reference(napi_env env,
 
 // Deletes a reference. The referenced value is released, and may
 // be GC'd unless there are other references to it.
-NAPI_EXTERN napi_status NAPI_CDECL napi_delete_reference(napi_env env,
+NAPI_EXTERN napi_status NAPI_CDECL napi_delete_reference(node_api_basic_env env,
                                                          napi_ref ref);
 
 // Increments the reference count, optionally returning the resulting count.
@@ -445,6 +469,7 @@ napi_get_dataview_info(napi_env env,
                        void** data,
                        napi_value* arraybuffer,
                        size_t* byte_offset);
+
 
 // version management
 NAPI_EXTERN napi_status NAPI_CDECL napi_get_version(node_api_basic_env env,
