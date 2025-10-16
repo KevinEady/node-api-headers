@@ -1,5 +1,16 @@
 # node-api-headers Changelog
 
+## [1.7.0](https://github.com/KevinEady/node-api-headers/compare/v1.6.0...v1.7.0) (2025-10-16)
+
+
+### Features
+
+* **no-release:** add conditional support in `#if` ([#52](https://github.com/KevinEady/node-api-headers/issues/52)) ([e1b8feb](https://github.com/KevinEady/node-api-headers/commit/e1b8feb060cf85522538ec1b8a1d6eb782620022))
+* update headers from nodejs/node tag v22.7.0 ([#48](https://github.com/KevinEady/node-api-headers/issues/48)) ([6c73c34](https://github.com/KevinEady/node-api-headers/commit/6c73c34b72e836531530f863eac315bd42e4569e))
+* update headers from nodejs/node tag v23.1.0 ([#56](https://github.com/KevinEady/node-api-headers/issues/56)) ([3336912](https://github.com/KevinEady/node-api-headers/commit/33369124c7f8a670422a0c5a27ad149da83ed8d6))
+* update headers from nodejs/node tag v23.6.0 ([#57](https://github.com/KevinEady/node-api-headers/issues/57)) ([64747b1](https://github.com/KevinEady/node-api-headers/commit/64747b17a73e8356ed606d1b4dccb626804777f2))
+* update headers from nodejs/node tag v24.9.0 ([#60](https://github.com/KevinEady/node-api-headers/issues/60)) ([5963ef9](https://github.com/KevinEady/node-api-headers/commit/5963ef9937c8f6bd8f33cb45c50f70bd9cbc0ffd))
+
 ## [1.6.0](https://github.com/nodejs/node-api-headers/compare/v1.5.0...v1.6.0) (2025-09-26)
 
 
